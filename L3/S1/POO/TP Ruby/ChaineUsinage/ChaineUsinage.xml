@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROJET NOM="ChaineUsinage" TYPE="Ruby">
+  <FICHIER>Piece.rb</FICHIER>
+  <FICHIER>Mouvement.rb</FICHIER>
+  <FICHIER>Echeancier.rb</FICHIER>
+  <FICHIER>Poste.rb</FICHIER>
+  <FICHIER>ChaineUsinage.rb</FICHIER>
+  <FICHIER>PosteSortie.rb</FICHIER>
+  <FICHIER>PosteVariable.rb</FICHIER>
+  <FICHIER>PosteConstant.rb</FICHIER>
+</PROJET>
+

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROJET NOM="BIBLIO" TYPE="Ruby">
+  <FICHIER>LivreV1.rb</FICHIER>
+  <FICHIER>LivreV2.rb</FICHIER>
+  <FICHIER>Bibliotheque.rb</FICHIER>
+</PROJET>
+
