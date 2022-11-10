@@ -1,11 +1,11 @@
 class Depense():
      
-     def __init__(self, date, libelle, entree, sortie, categorie) -> None:
+     def __init__(self, date, libelle, entree, sortie) -> None:
           self.date = date
           self.libelle = libelle
           self.entree = entree
           self.sortie = sortie
-          self.categorie = categorie
+          # self.categorie = categorie
      
      def getDate(self):
           return self.date
@@ -31,10 +31,12 @@ class Depense():
      def setSortie(self, sortie):
           self.sortie = sortie
      
-     def getCategorie(self):
-          return self.categorie
+     # def getCategorie(self):
+     #      return self.categorie
      
-     def setCategorie(self, categorie):
-          self.categorie = categorie
+     # def setCategorie(self, categorie):
+     #      self.categorie = categorie
 
-          
+d = Depense("10/11/2022", "naan cheese", "0", "7")
+x = d.getDate()
+print(int(x[6:10]))
