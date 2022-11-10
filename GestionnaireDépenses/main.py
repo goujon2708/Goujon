@@ -7,5 +7,3 @@ from ClassementDonnees import ClassementDonnees
 # window = QWidget()
 # window.show() 
 # app.exec()
-
-print(ClassementDonnees.calculExpenses("assets/files/octobre.csv", 'Débit euros'))
