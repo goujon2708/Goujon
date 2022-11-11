@@ -1,0 +1,11 @@
+.QLabel[text="OK"] {
+    background-color: blue;
+    font-size: 24pt;
+    padding: 10px;
+}
+
+.QPushbutton[text="Press Me"] {
+    background-color: greenyellow;
+    font-size: 24pt;
+    padding: 100px
+}

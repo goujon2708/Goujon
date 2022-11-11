@@ -1,6 +1,4 @@
-import sys
 import pandas as pd
-import numpy as np
 from Depense import Depense
 
 """Class that carry out some treatments on the data
