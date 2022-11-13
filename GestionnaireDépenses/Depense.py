@@ -37,6 +37,5 @@ class Depense():
      # def setCategorie(self, categorie):
      #      self.categorie = categorie
 
-d = Depense("10/11/2022", "naan cheese", "0", "7")
-x = d.getDate()
-print(int(x[6:10]))
+# d = Depense("10/11/2022", "naan cheese", "0", "7")
+# x = d.getDate()

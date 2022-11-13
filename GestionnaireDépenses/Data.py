@@ -1,13 +1,20 @@
 import pandas as pd
+import os
 from Depense import Depense
 
 """Class that carry out some treatments on the data
 """
-class ClassementDonnees():
+class Data():
 
      def __init__(self):
          self.depenses = []
-         
+         self.mois = []
+
+     def getDepenses(self):
+          return self.depenses
+
+     def getMois(self):
+          return self.mois
          
      """Get the column given for the file given with the path
      """
@@ -50,9 +57,13 @@ class ClassementDonnees():
           d = Depense(date, libelle, sortie, entree)
           self.depenses.append(d)
 
+     def addMonth(self, month):
+          self.mois.append(month)
 
-c = ClassementDonnees()
+     def loadFile(self):
+          listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
+          for i in range(len(listFiles)):
+               self.mois.append(listFiles[i])
+
+c = Data()
 # c.getDataColumn("assets/files/octobre.csv", )
-c.tidyData("assets/files/octobre.csv")
-c.addDepense("01/01/01", "CHEESE NAAN WTF", "-7.00", "0")
-c.printList()

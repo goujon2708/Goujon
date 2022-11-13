@@ -25,8 +25,6 @@ class Budget():
 
           """add a new budget to the list of budgets
           """
-     
-     
      def addBudget(self, nom, montantMax, situation):
           b = Budget()
           b.nom = nom

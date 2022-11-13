@@ -3,7 +3,7 @@ import sys
 from PySide6 import QtWidgets
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QComboBox, QWidget
-
+from Data import Data
 
 class UI(QMainWindow):
 
@@ -20,8 +20,13 @@ class UI(QMainWindow):
 
         layout = QVBoxLayout()
 
+        # loading of the files countained in the repertory
         comboBox = QComboBox()
-        comboBox.addItems(['Octobre'])
+        data = Data()
+        data.loadFile()
+        listMois = data.getMois()
+        for i in range(len(listMois)):
+            comboBox.addItem(listMois[i])
 
         button = QPushButton('Click Me')
         button.setCheckable(True)
