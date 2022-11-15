@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit,
                                QTabWidget, QTimeEdit, QVBoxLayout, QWidget, QFormLayout,
                                QHBoxLayout, QTableWidget, QTableWidgetItem)
 
-from DepenseUI import DepenseUI
 from Budget import Budget
 from Data import Data
 
@@ -96,24 +95,62 @@ class tabdemo(QTabWidget):
                for j in range(len(categories)):
                     choixCat.addItem(categories[j])            
                     tableWidget.setCellWidget(i, 4, choixCat)
-
+          
+          
+          dateLabel = QLabel("Date")
+          lineEdit1 = QDateEdit()        
+          libelleLabel = QLabel("Libelle")
+          lineEdit2 = QLineEdit()
+          sortieLabel = QLabel("Sortie")
+          lineEdit3 = QLineEdit()
+          entreeLabel = QLabel("Entrée")
+          lineEdit4 = QLineEdit()
+          catLabel = QLabel("Catégorie")
+          lineEdit5 = QComboBox()
+          # creation of a list of categories with the different budgets
+          categories = []
+          b = Budget()
+          b.addBudget("Nourriture", 120, 0)
+          b.addBudget("Déplacement", 150, 0)
+          for i in range(len(b.budgets)):
+               elem:Budget = b.budgets[i]
+               categories.append(elem.getNom())
+          for j in range(len(categories)):
+                    lineEdit5.addItem(categories[j])
+          
+          addButton = QPushButton("Ajouter", self)  
+          addButton.setCheckable(True)
+          addButton.clicked.connect(lambda: 
+                    print(lineEdit1.text() + " " + 
+                          lineEdit2.text() + " " + 
+                          lineEdit3.text() + " " +
+                          lineEdit4.text() + "  " +
+                          lineEdit5.currentText()
+                          )
+               )
+          
           layout.addWidget(tableWidget)
-          layout.addWidget(choixCat)
+          layout.addWidget(dateLabel)
+          layout.addWidget(lineEdit1)
+          layout.addWidget(libelleLabel)
+          layout.addWidget(lineEdit2)
+          layout.addWidget(sortieLabel)
+          layout.addWidget(lineEdit3)
+          layout.addWidget(entreeLabel)
+          layout.addWidget(lineEdit4)          
+          layout.addWidget(catLabel)
+          layout.addWidget(lineEdit5)
+          layout.addWidget(addButton)
           
           self.tabDepense.setLayout(layout)
-		
-     
+          
+     def printDepense(self, output: QLineEdit):
+          print(output.selectedText())
      
      def budgetsTab(self):
-          layout = QFormLayout()
-          sex = QHBoxLayout()
-          sex.addWidget(QRadioButton("Male"))
-          sex.addWidget(QRadioButton("Female"))
-          layout.addRow(QLabel("Sex"),sex)
-          layout.addRow("Date of Birth",QLineEdit())
-          self.setTabText(1,"Budgets")
-          self.tabBudgets.setLayout(layout)
-		
+          return
+          
+          
      
      
      def bilanTab(self):
