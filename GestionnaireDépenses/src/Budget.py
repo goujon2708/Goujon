@@ -23,6 +23,8 @@ class Budget():
      def setSituation(self, situation):
           self.situation = situation
 
+          
+          
           """add a new budget to the list of budgets
           """
      def addBudget(self, nom, montantMax, situation):
@@ -51,14 +53,14 @@ class Budget():
 
 
 
-b = Budget()
-b.addBudget("Nourriture", 120, 0)
-b.addBudget("Soirées", 50, 0)
+# b = Budget()
+# b.addBudget("Nourriture", 120, 0)
+# b.addBudget("Soirées", 50, 0)
 
-print("Avant suppression : ")
-b.printBudgets()
+# print("Avant suppression : ")
+# b.printBudgets()
 
-b.delBudget("Soirées")
+# b.delBudget("Soirées")
 
-print("Après suppression : ")
-b.printBudgets()
+# print("Après suppression : ")
+# b.printBudgets()

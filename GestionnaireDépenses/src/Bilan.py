@@ -51,14 +51,14 @@ class Bilan():
                elem: Bilan = self.bilans[i]
                print(elem.getAnnee() + " " + str(elem.getEntree()) + " " + str(elem.getSortie()))
 
-b = Bilan()
-b.addBilan("2020", 2300, 2500)
-b.addBilan("2021", 4000, 3500)
+# b = Bilan()
+# b.addBilan("2020", 2300, 2500)
+# b.addBilan("2021", 4000, 3500)
 
-print("Avant suppression : ")
-b.printBilans()
+# print("Avant suppression : ")
+# b.printBilans()
 
-b.delBilan("2020")
+# b.delBilan("2020")
 
-print("Après suppression : ")
-b.printBilans()
+# print("Après suppression : ")
+# b.printBilans()

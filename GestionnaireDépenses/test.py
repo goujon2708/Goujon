@@ -22,51 +22,62 @@ from PySide6.QtWidgets import (
     QTimeEdit,
     QVBoxLayout,
     QWidget,
+    QGridLayout,
+    QTabWidget
 )
 
 
-# Subclass QMainWindow to customize your application's main window
-class MainWindow(QMainWindow):
+class WelPage(QWidget):
+
     def __init__(self):
         super().__init__()
+        wel_tab = QWidget()
+        grid = QGridLayout()
 
-        self.setWindowTitle("Widgets App")
+        lab_name = QLabel("This is a label")
+        git_link = QLabel("This is a link")
+        git_link.setOpenExternalLinks(True)
+        yt_link = QLabel("Another Link")
+        yt_link.setOpenExternalLinks(True)
 
-        layout = QVBoxLayout()
-        widgets = [
-            QCheckBox,
-            QComboBox,
-            QDateEdit,
-            QDateTimeEdit,
-            QDial,
-            QDoubleSpinBox,
-            QFontComboBox,
-            QLCDNumber,
-            QLabel,
-            QLineEdit,
-            QProgressBar,
-            QPushButton,
-            QRadioButton,
-            QSlider,
-            QSpinBox,
-            QTimeEdit,
-        ]
+        grid.addWidget(lab_name, 0, 1)
+        grid.addWidget(git_link, 1, 0)
+        grid.addWidget(yt_link, 1, 3)
+
+        wel_tab.setLayout(grid)
+        wel_tab.show()
+
+class AboutPage(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        about_tab = QWidget()
+        lo = QVBoxLayout()
+        purpose = QLabel("A really long label")
+
+        lo.addWidget(purpose)
+        about_tab.setLayout(lo)
+        about_tab.show()
+        
+def main():
+    w = QWidget()
+    layout = QVBoxLayout()
+    tw = QTabWidget()
+    w.resize(450, 250)
+    w.setWindowTitle('Window Title')
+    layout.addWidget(tw)
+
+    tw.addTab(WelPage(), "Welcome Screen")
+    tw.addTab(AboutPage(), "About")
+    tw.show()
+
+
+    w.setLayout(layout)
+    w.show()
+    app.exec()
 
 
 
-        for w in widgets:
-            layout.addWidget(w())
-
-        widget = QWidget()
-        widget.setLayout(layout)
-
-        # Set the central widget of the Window. Widget will expand
-        # to take up all the space in the window by default.
-        self.setCentralWidget(widget)
-
-
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-
-app.exec_()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main()

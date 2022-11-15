@@ -15,9 +15,10 @@ class Data():
 
      def getMois(self):
           return self.mois
-         
-     """Get the column given for the file given with the path
-     """
+     
+     
+          """Get the column given for the file given with the path
+          """
      def getDataColumn(self, path, column):
           data = pd.read_csv(path, sep=';')
           return data[column]
@@ -50,6 +51,23 @@ class Data():
                      str(element.getSortie()) + " " + 
                      str(element.getEntree())
                     )
+               
+     def getDate(self, row):
+          elem: Depense = self.depenses[row]
+          return elem.getDate()
+     
+     def getLibelle(self, row):
+          elem: Depense = self.depenses[row]
+          return elem.getLibelle()
+     
+     def getSortie(self, row):
+          elem: Depense = self.depenses[row]
+          return elem.getSortie()
+     
+     def getEntree(self, row):
+          elem: Depense = self.depenses[row]
+          return elem.getEntree()
+     
      
           """add a depense to the list
           """
@@ -57,13 +75,18 @@ class Data():
           d = Depense(date, libelle, sortie, entree)
           self.depenses.append(d)
 
+          """add a new month to the list
+          """
      def addMonth(self, month):
           self.mois.append(month)
 
+          """find the repo where all the files are stored et stores them in a list
+          """
      def loadFile(self):
-          listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
+          listFiles = os.listdir('/Users/poulp/Documents/GitHub/Arthur-Scherrer/GestionnaireDépenses/assets/files')
           for i in range(len(listFiles)):
                self.mois.append(listFiles[i])
 
 c = Data()
-# c.getDataColumn("assets/files/octobre.csv", )
+# c.getDataColumn("assets/files/octobre.csv")
+#c.tidyData("assets/files/octobre.csv")
