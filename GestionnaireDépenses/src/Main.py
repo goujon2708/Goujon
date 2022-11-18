@@ -11,37 +11,18 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit,
 
 from Budget import Budget
 from Data import Data
+from Depense import Depense
 
-# class Main(QTabWidget):
-#      def __init__(self, parent = None) -> None:
-#           super(Main, self).__init__(parent)
-#           self.depenseTab = QWidget()
-#           self.budgetTab = QWidget()
-#           self.bilanTab = QWidget()
-          
-#           self.addTab(self.depenseTab, "Dépenses")
-#           self.addTab(self.budgetTab, "Budgets")
-#           self.addTab(self.bilanTab, "Bilan")
-          
-#           d = DepenseUI()
-#           budg = BudgetsUI()
-#           bilan = BilanUI()
-#           self.setWindowTitle("Gestionnaire de dépenses")
-#           self.setFixedSize(QSize(1300, 750))
-          
-# app = QApplication(sys.argv)
 
-# window = Main()
-# window.show()
 
-# app.exec()
-
-class tabdemo(QTabWidget):
+class MainUI(QTabWidget):
      def __init__(self, parent = None):
-          super(tabdemo, self).__init__(parent)
+          super(MainUI, self).__init__(parent)
           self.tabDepense = QWidget()
           self.tabBudgets = QWidget()
           self.tabBilan = QWidget()
+          
+          self.data = Data()
 
           self.addTab(self.tabDepense,"Dépenses")
           self.addTab(self.tabBudgets,"Budgets")
@@ -55,16 +36,13 @@ class tabdemo(QTabWidget):
      def depenseTab(self):
           # creation of the different layouts
           layout = QVBoxLayout()
-
+          
           # loading of the files countained in the repertory
           choixMois = QComboBox()
-          data = Data()
-          data.loadFile()
-          listMois = data.getMois()
+          self.data.loadFile()
+          listMois = self.data.getMois()
           for i in range(len(listMois)):
                choixMois.addItem(listMois[i])
-
-          layout.addWidget(choixMois)
 
           # creation of a list of categories with the different budgets
           categories = []
@@ -75,28 +53,27 @@ class tabdemo(QTabWidget):
                elem:Budget = b.budgets[i]
                categories.append(elem.getNom())
 
-
           path = '../assets/files/' + choixMois.currentText() # construction of the path where the file to be read is to be fetched
-          data.tidyData(path) # storing data in a list
-          tableWidget = QTableWidget(len(data.getDepenses()), 5, self) # creation of the table
+          self.data.tidyData(path) # storing data in a list
+          tableWidget = QTableWidget(len(self.data.getDepenses()), 5, self) # creation of the table
           tableWidget.setHorizontalHeaderLabels(['Date', 'Libellé', 'Sortie', 'Entrée', 'Catégorie']) # addition of columns
 
           # loop for displaying data in the table
           for i in range(tableWidget.rowCount()):
-               date = QTableWidgetItem(data.getDate(i))
+               date = QTableWidgetItem(self.data.getDate(i))
                tableWidget.setItem(i, 0, date)
-               libelle = QTableWidgetItem(data.getLibelle(i))
+               libelle = QTableWidgetItem(self.data.getLibelle(i))
                tableWidget.setItem(i, 1, libelle)
-               sortie = QTableWidgetItem(str(data.getSortie(i)))
+               sortie = QTableWidgetItem(str(self.data.getSortie(i)))
                tableWidget.setItem(i, 3, sortie)
-               entree = QTableWidgetItem(str(data.getEntree(i)))
+               entree = QTableWidgetItem(str(self.data.getEntree(i)))
                tableWidget.setItem(i, 2, entree)
                choixCat = QComboBox()
                for j in range(len(categories)):
                     choixCat.addItem(categories[j])            
                     tableWidget.setCellWidget(i, 4, choixCat)
           
-          
+          # addition's form
           dateLabel = QLabel("Date")
           lineEdit1 = QDateEdit()        
           libelleLabel = QLabel("Libelle")
@@ -107,6 +84,7 @@ class tabdemo(QTabWidget):
           lineEdit4 = QLineEdit()
           catLabel = QLabel("Catégorie")
           lineEdit5 = QComboBox()
+          
           # creation of a list of categories with the different budgets
           categories = []
           b = Budget()
@@ -120,15 +98,13 @@ class tabdemo(QTabWidget):
           
           addButton = QPushButton("Ajouter", self)  
           addButton.setCheckable(True)
-          addButton.clicked.connect(lambda: 
-                    print(lineEdit1.text() + " " + 
-                          lineEdit2.text() + " " + 
-                          lineEdit3.text() + " " +
-                          lineEdit4.text() + "  " +
-                          lineEdit5.currentText()
-                          )
-               )
+          addButton.clicked.connect(lambda: self.majDepense(lineEdit1.text(),
+                                                        lineEdit2.text(),
+                                                        lineEdit3.text(),
+                                                        lineEdit4.text()
+                                                        ))
           
+          layout.addWidget(choixMois)
           layout.addWidget(tableWidget)
           layout.addWidget(dateLabel)
           layout.addWidget(lineEdit1)
@@ -143,9 +119,21 @@ class tabdemo(QTabWidget):
           layout.addWidget(addButton)
           
           self.tabDepense.setLayout(layout)
-          
-     def printDepense(self, output: QLineEdit):
-          print(output.selectedText())
+
+     
+          """when the "add" button is clicked, triggers this event which adds the new expense to the list
+          """
+     def majDepense(self, 
+                        date: QDateEdit, 
+                        libelle: QLineEdit, 
+                        sortie: QLineEdit,
+                        entree: QLineEdit
+                        ):
+          self.data.addDepense(date, libelle, sortie, entree)
+          self.data.printList()
+     
+     
+     
      
      def budgetsTab(self):
           return
@@ -164,10 +152,11 @@ class tabdemo(QTabWidget):
 
 
 def main():
-   app = QApplication(sys.argv)
-   ex = tabdemo()
-   ex.show()
-   sys.exit(app.exec())
+     app = QApplication(sys.argv)
+     ex = MainUI()
+     ex.show()
+     sys.exit(app.exec())
+
 	
 if __name__ == '__main__':
    main()
