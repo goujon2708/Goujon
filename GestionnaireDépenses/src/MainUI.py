@@ -34,17 +34,6 @@ class MainUI(QTabWidget):
      def depenseTab(self):
 
           layout = QVBoxLayout()
-          # addition's form
-          dateLabel = QLabel("Date")
-          lineEdit1 = QDateEdit()
-          libelleLabel = QLabel("Libelle")
-          lineEdit2 = QLineEdit()
-          sortieLabel = QLabel("Sortie")
-          lineEdit3 = QLineEdit()
-          entreeLabel = QLabel("Entrée")
-          lineEdit4 = QLineEdit()
-          catLabel = QLabel("Catégorie")
-          lineEdit5 = QComboBox()
 
           # creation of a list of categories with the different budgets
           categories = []
@@ -55,41 +44,11 @@ class MainUI(QTabWidget):
           for i in range(len(b.budgets)):
                elem: Budget = b.budgets[i]
                categories.append(elem.getNom())
-               for j in range(len(categories)):
-                    lineEdit5.addItem(categories[j])
-               
-          addButton = QPushButton("Ajouter", self)
-          addButton.setCheckable(True)
-          addButton.clicked.connect(lambda: self.majDepense(lineEdit1.text(),
-                                                  lineEdit2.text(),
-                                                  lineEdit3.text(),
-                                                  lineEdit4.text()
-                                                  ))
 
           layout.addWidget(self.printTable())
-          layout.addWidget(dateLabel)
-          layout.addWidget(lineEdit1)
-          layout.addWidget(libelleLabel)
-          layout.addWidget(lineEdit2)
-          layout.addWidget(sortieLabel)
-          layout.addWidget(lineEdit3)
-          layout.addWidget(entreeLabel)
-          layout.addWidget(lineEdit4)
-          layout.addWidget(catLabel)
-          layout.addWidget(lineEdit5)
-          layout.addWidget(addButton)
           
           self.tabDepense.setLayout(layout)
 
-     
-     
-     
-     """when the "add" button is clicked, triggers this event which adds the new expense to the list
-     """
-     def majDepense(self, date: QDateEdit, libelle: QLineEdit, sortie: QLineEdit, entree: QLineEdit):
-          self.data.addDepense(date, libelle, sortie, entree)
-          self.data.printList()
-          self.printTable()
 
      
      
@@ -120,10 +79,12 @@ class MainUI(QTabWidget):
 
           # construction of the path where the file to be read is to be fetched
           path = '../assets/files/' + choixMois.currentText()
-          self.data.tidyData(path)  # storing data in a list
-          print("Taille de la liste : ", len(self.data.depenses))
-          tableWidget = QTableWidget(len(self.data.getDepenses()), 5, self)  # creation of the table
-          tableWidget.setHorizontalHeaderLabels(['Date', 'Libellé', 'Sortie', 'Entrée', 'Catégorie'])  # addition of columns
+          # storing data in a list
+          self.data.tidyData(path)  
+          # creation of the table
+          tableWidget = QTableWidget(len(self.data.getDepenses()), 5, self)  
+          # addition of columns
+          tableWidget.setHorizontalHeaderLabels(['Date', 'Libellé', 'Sortie', 'Entrée', 'Catégorie'])  
 
           # loop for displaying data in the table
           for i in range(tableWidget.rowCount()):
@@ -163,13 +124,13 @@ class MainUI(QTabWidget):
           self.tabBilan.setLayout(layout)
 
 
-     def main():
-          
-          app = QApplication(sys.argv)
-          ex = MainUI()
-          ex.show()
-          sys.exit(app.exec())
+def main():
+
+     app = QApplication(sys.argv)
+     ex = MainUI()
+     ex.show()
+     sys.exit(app.exec())
 
 
-     if __name__ == '__main__':
-          main()
+if __name__ == '__main__':
+     main()

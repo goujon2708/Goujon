@@ -25,8 +25,8 @@ class Budget():
 
           
           
-          """add a new budget to the list of budgets
-          """
+     """add a new budget to the list of budgets
+     """
      def addBudget(self, nom, montantMax, situation):
           b = Budget()
           b.nom = nom
@@ -34,8 +34,8 @@ class Budget():
           b.situation = situation
           self.budgets.append(b)
      
-          """delete the budget given of list
-          """
+     """delete the budget given of list
+     """
      def delBudget(self, nomBudget):
           for e in range(len(self.budgets)):
                elem: Budget = self.budgets[e]
@@ -43,8 +43,8 @@ class Budget():
                     self.budgets.remove(elem)
                     break
      
-          """print the list
-          """
+     """print the list
+     """
      def printBudgets(self):
           for i in range(len(self.budgets)):
                elem: Budget = self.budgets[i]

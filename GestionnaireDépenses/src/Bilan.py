@@ -24,10 +24,8 @@ class Bilan():
      def setSortie(self, sortie):
           self.sortie = sortie
      
-          """add a bilan to the list of bilans
-          """
-     
-     
+     """add a bilan to the list of bilans
+     """
      def addBilan(self, annee, entree, sortie):
           b = Bilan()
           b.annee = annee
@@ -35,8 +33,8 @@ class Bilan():
           b.sortie = sortie
           self.bilans.append(b)
 
-          """delete the given bilan of the list
-          """
+     """delete the given bilan of the list
+     """
      def delBilan(self, anneeBilan):
           for e in range(len(self.bilans)):
                elem: Bilan = self.bilans[e]
@@ -44,8 +42,8 @@ class Bilan():
                     self.bilans.remove(elem)
                     break
                
-          """print the list of bilans
-          """
+     """print the list of bilans
+     """
      def printBilans(self):
           for i in range(len(self.bilans)):
                elem: Bilan = self.bilans[i]

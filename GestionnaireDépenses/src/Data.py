@@ -119,7 +119,7 @@ class Data():
      """find the repo where all the files are stored et stores them in a list
      """
      def loadFile(self):
-          listFiles = os.listdir('/info/etu/m1/s183012/Téléchargements/GestionnaireDépenses/assets/files')
+          listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
           for i in range(len(listFiles)):
                self.mois.append(listFiles[i])
 
