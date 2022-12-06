@@ -20,6 +20,7 @@ class MainUI(QTabWidget):
           self.tabBilan = QWidget()
 
           self.data = Data()
+          self.budgets = Budget()
           self.addTab(self.tabDepense, "Dépenses")
           self.addTab(self.tabBudgets, "Budgets")
           self.addTab(self.tabBilan, "Bilan")
@@ -35,6 +36,20 @@ class MainUI(QTabWidget):
 
           layout = QVBoxLayout()
 
+          # loading of the files countained in the repertory
+          choixMois = QComboBox()
+          self.data.loadFile()
+          listMois = self.data.getMois()
+
+          for i in range(len(listMois)):
+               
+               choixMois.addItem(listMois[i])
+          
+          # construction of the path where the file to be read is to be fetched
+          path = '../assets/files/' + choixMois.currentText()
+          # storing data in a list
+          self.data.tidyData(path)  
+
           # creation of a list of categories with the different budgets
           categories = []
           b = Budget()
@@ -42,9 +57,11 @@ class MainUI(QTabWidget):
           b.addBudget("Déplacement", 150, 0)
 
           for i in range(len(b.budgets)):
+               
                elem: Budget = b.budgets[i]
                categories.append(elem.getNom())
 
+          layout.addWidget(choixMois)
           layout.addWidget(self.printTable())
           
           self.tabDepense.setLayout(layout)
@@ -59,14 +76,6 @@ class MainUI(QTabWidget):
           # creation of the different layouts
           layout = QVBoxLayout()
 
-          # loading of the files countained in the repertory
-          choixMois = QComboBox()
-          self.data.loadFile()
-          listMois = self.data.getMois()
-
-          for i in range(len(listMois)):
-               choixMois.addItem(listMois[i])
-
           # creation of a list of categories with the different budgets
           categories = []
           b = Budget()
@@ -74,13 +83,11 @@ class MainUI(QTabWidget):
           b.addBudget("Déplacement", 150, 0)
 
           for i in range(len(b.budgets)):
+               
                elem: Budget = b.budgets[i]
                categories.append(elem.getNom())
 
-          # construction of the path where the file to be read is to be fetched
-          path = '../assets/files/' + choixMois.currentText()
-          # storing data in a list
-          self.data.tidyData(path)  
+          
           # creation of the table
           tableWidget = QTableWidget(len(self.data.getDepenses()), 5, self)  
           # addition of columns
@@ -88,6 +95,7 @@ class MainUI(QTabWidget):
 
           # loop for displaying data in the table
           for i in range(tableWidget.rowCount()):
+               
                date = QTableWidgetItem(self.data.getDate(i))
                tableWidget.setItem(i, 0, date)
                libelle = QTableWidgetItem(self.data.getLibelle(i))
@@ -98,6 +106,7 @@ class MainUI(QTabWidget):
                tableWidget.setItem(i, 2, entree)
                choixCat = QComboBox()
                for j in range(len(categories)):
+                    
                     choixCat.addItem(categories[j])
                     tableWidget.setCellWidget(i, 4, choixCat)
 
@@ -107,10 +116,50 @@ class MainUI(QTabWidget):
      
      
      def budgetsTab(self):
-          # layout = QVBoxLayout()
-          # layout.addWidget(self.printTable())
-          # self.tabBudgets.setLayout(layout)
-          return
+          # creation of the different layouts
+          layout = QVBoxLayout()
+
+          # loading of the files countained in the repertory
+          choixMois = QComboBox()
+          self.data.loadFile()
+          listMois = self.data.getMois()
+
+          for i in range(len(listMois)):
+               
+               choixMois.addItem(listMois[i])
+
+          self.budgets.addBudget("Nourriture", 120, 0)
+          self.budgets.addBudget("Déplacement", 150, 0)
+          self.budgets.addBudget("Abonnement", 13, 0)
+          self.budgets.addBudget("Gloubiboulga", 20, 0)
+          self.budgets.addBudget("Soirées", 30, 0)
+          self.budgets.addBudget("Assurance", 53, 0)
+          self.budgets.addBudget("Loyer", 325, 0)
+          self.budgets.addBudget("Charges", 25, 0)
+          self.budgets.addBudget("Divers", 70, 0)
+          
+          # creation of the table
+          tableWidget = QTableWidget(len(self.budgets.budgets), 2, self)
+          # addition of columns
+          tableWidget.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
+
+          
+
+          print(self.budgets.budgets)
+          print(self.budgets.getNomTab(0))
+
+          for i in range(tableWidget.rowCount()):
+
+               nom = QTableWidgetItem(self.budgets.getNomTab(i))
+               tableWidget.setItem(i, 0, nom)
+               
+               situation = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
+               tableWidget.setItem(i, 1, situation)
+
+          layout.addWidget(choixMois)
+          layout.addWidget(tableWidget)
+
+          self.tabBudgets.setLayout(layout)
 
      
      
@@ -133,4 +182,5 @@ def main():
 
 
 if __name__ == '__main__':
+     
      main()

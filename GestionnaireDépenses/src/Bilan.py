@@ -7,26 +7,31 @@ class Bilan():
           pass
 
      def getAnnee(self):
+          
           return self.annee
      
      def setAnnee(self, annee):
           self.annee = annee
      
      def getEntree(self):
+          
           return self.entree
      
      def setEntree(self, entree):
+          
           self.annee = entree
      
      def getSortie(self):
           return self.sortie
      
      def setSortie(self, sortie):
+          
           self.sortie = sortie
      
      """add a bilan to the list of bilans
      """
      def addBilan(self, annee, entree, sortie):
+          
           b = Bilan()
           b.annee = annee
           b.entree = entree
@@ -36,7 +41,9 @@ class Bilan():
      """delete the given bilan of the list
      """
      def delBilan(self, anneeBilan):
+          
           for e in range(len(self.bilans)):
+               
                elem: Bilan = self.bilans[e]
                if(elem.getAnnee() == anneeBilan):
                     self.bilans.remove(elem)
@@ -45,7 +52,9 @@ class Bilan():
      """print the list of bilans
      """
      def printBilans(self):
+          
           for i in range(len(self.bilans)):
+               
                elem: Bilan = self.bilans[i]
                print(elem.getAnnee() + " " + str(elem.getEntree()) + " " + str(elem.getSortie()))
 

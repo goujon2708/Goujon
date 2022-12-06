@@ -64,6 +64,7 @@ class Data():
      def printList(self):
           
           for i in range(len(self.depenses)):
+               
                element: Depense = self.depenses[i]
                print(element.getDate() + " " + 
                element.getLibelle() + " " + 
@@ -119,8 +120,10 @@ class Data():
      """find the repo where all the files are stored et stores them in a list
      """
      def loadFile(self):
+          
           listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
           for i in range(len(listFiles)):
+               
                self.mois.append(listFiles[i])
 
 

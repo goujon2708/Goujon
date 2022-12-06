@@ -50,17 +50,28 @@ class Budget():
                elem: Budget = self.budgets[i]
                print(elem.getNom() + " " + str(elem.getMontantMax()) + " " + str(elem.getSituation()))
 
+     """return the list of budgets
+     """
+     def getBudgets(self):
+          return self.budgets
+
+     def getNomTab(self, row):
+          elem: Budget = self.budgets[row]
+          return elem.getNom()
+     
+     def getSituationTab(self, row):
+          elem: Budget = self.budgets[row]
+          return elem.getSituation()
+     
+     def getMontantMaxTab(self, row):
+          elem: Budget = self.budgets[row]
+          return elem.getMontantMax()
 
 
 
-# b = Budget()
+
+b = Budget()
 # b.addBudget("Nourriture", 120, 0)
-# b.addBudget("Soirées", 50, 0)
+# b.addBudget("Divers", 70, 0)
 
-# print("Avant suppression : ")
-# b.printBudgets()
-
-# b.delBudget("Soirées")
-
-# print("Après suppression : ")
-# b.printBudgets()
+# print(b.getMontantMaxTab(1))
