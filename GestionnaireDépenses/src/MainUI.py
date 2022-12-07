@@ -150,22 +150,42 @@ class MainUI(QTabWidget):
           self.budgets.addBudget("Divers", 70, 0)
           
           # creation of the table
-          tableWidget = QTableWidget(len(self.budgets.budgets), 2, self)
+          budgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
           # addition of columns
-          tableWidget.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
+          budgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
 
           # rangement des valeurs dans le tableau des budgets
-          for i in range(tableWidget.rowCount()):
+          for i in range(budgetsTab.rowCount()):
 
                nom = QTableWidgetItem(self.budgets.getNomTab(i))
-               tableWidget.setItem(i, 0, nom)
+               budgetsTab.setItem(i, 0, nom)
                
-               situation = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
-               tableWidget.setItem(i, 1, situation)
+               montantMax = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
+               budgetsTab.setItem(i, 1, montantMax)
+               
+          
+          
+          
+          # création du tableau représentant la situation des dépenses par rapport au budget
+          situationBudgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
+          # setup des colonnes 
+          situationBudgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Situation Budget'])
+          
+          # rangement des valeurs dans le tableau
+          for j in range(situationBudgetsTab.rowCount()):
+               
+               nom = QTableWidgetItem(self.budgets.getNomTab(j))
+               situationBudgetsTab.setItem(j, 0, nom)
+               
+               situation = QTableWidgetItem(str(self.budgets.getSituationTab(j)) + "/" +
+                                            str(self.budgets.getMontantMaxTab(j))
+                                            )
+               situationBudgetsTab.setItem(j, 1, situation)
 
           # ajout des Widget dans le layout principal
           layout.addWidget(choixMois)
-          layout.addWidget(tableWidget)
+          layout.addWidget(budgetsTab)
+          layout.addWidget(situationBudgetsTab)
 
           # affichage de ce layout
           self.tabBudgets.setLayout(layout)
