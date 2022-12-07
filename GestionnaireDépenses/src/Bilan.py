@@ -1,8 +1,12 @@
 class Bilan():
      def __init__(self) -> None:
+          # année du bilanc
           self.annee = ''
+          # revenu total perçu sur l'année
           self.entree = 0
+          # dépense totale sur l'année
           self.sortie = 0
+          # liste de bilans
           self.bilans = []
           pass
 

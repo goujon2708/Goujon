@@ -9,8 +9,10 @@ from Depense import Depense
 class Data():
 
      def __init__(self):
-      
+          
+          # liste de dépenses
           self.depenses = []
+          # liste de mois
           self.mois = []
 
 
@@ -47,8 +49,10 @@ class Data():
      def tidyData(self, path):
 
           self.depenses.clear() # to avoid copies
+          # lecture du fichier présent au chemin passé en paramètre
           data = pd.read_csv(path, sep=';')
 
+          # rangement des données lues dans la liste des dépenses
           for i in data.index:
                
                date = data["Date"][i]
@@ -73,26 +77,22 @@ class Data():
                )
 
  
+     # méthodes permettant de retourner de récupérer l'attribut voulu présent à la ligne 'row' de la liste des dépenses
 
      def getDate(self, row):
 
           elem: Depense = self.depenses[row]
           return elem.getDate()
 
- 
-
      def getLibelle(self, row):
           
           elem: Depense = self.depenses[row]
-          return elem.getLibelle()
-
- 
+          return elem.getLibelle() 
 
      def getSortie(self, row):
 
           elem: Depense = self.depenses[row]
           return elem.getSortie()
-
 
      def getEntree(self, row):
 
@@ -100,6 +100,7 @@ class Data():
           return elem.getEntree()
 
 
+     
      """add a depense to the list
      """
      def addDepense(self, date, libelle, sortie, entree):
@@ -121,7 +122,10 @@ class Data():
      """
      def loadFile(self):
           
-          listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
+          # récupération du nom de tous les fichiers présents dans le répertoire passé en paramètre
+          listFiles = os.listdir('/Users/poulp/Documents/GitHub/Arthur-Scherrer/GestionnaireDépenses/assets/files')
+          
+          # concaténation de la liste des fichiers présents dans le répertoire avec la liste des mois
           for i in range(len(listFiles)):
                
                self.mois.append(listFiles[i])

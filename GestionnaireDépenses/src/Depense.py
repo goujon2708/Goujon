@@ -2,10 +2,15 @@ class Depense():
      
      def __init__(self, date, libelle, entree, sortie) -> None:
           
+          # date de la dépense
           self.date = date
+          # description rapide de la dépense
           self.libelle = libelle
+          # montant du crédit si c'est une rentrée d'argent
           self.entree = entree
+          # montant de la dépense
           self.sortie = sortie
+          # catégorie de la dépense
           # self.categorie = categorie
      
      def getDate(self):

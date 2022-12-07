@@ -1,12 +1,16 @@
 class Budget():
      def __init__(self) -> None:
+          # nom du budget
           self.nom = ''
+          # montant maximum du budget
           self.montantMax = 0
+          # situation à l'instant T du budget
           self.situation = 0
+          # liste de budgets
           self.budgets = []
 
      def getNom(self):
-          return self.nom
+          return self.nom    
      
      def setNom(self, nom):
           self.nom = nom
@@ -54,6 +58,8 @@ class Budget():
      """
      def getBudgets(self):
           return self.budgets
+     
+     # méthodes permettant de retourner l'arrtibut voulu présent à la ligne 'row' de la liste des budgets
 
      def getNomTab(self, row):
           elem: Budget = self.budgets[row]

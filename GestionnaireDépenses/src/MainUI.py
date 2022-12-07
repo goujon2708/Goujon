@@ -15,18 +15,25 @@ class MainUI(QTabWidget):
      def __init__(self, parent=None):
 
           super(MainUI, self).__init__(parent)
+          # onglet "Dépenses"
           self.tabDepense = QWidget()
+          # onglet "Budgets"
           self.tabBudgets = QWidget()
+          # onglet "Bilan"
           self.tabBilan = QWidget()
+
 
           self.data = Data()
           self.budgets = Budget()
+          
           self.addTab(self.tabDepense, "Dépenses")
           self.addTab(self.tabBudgets, "Budgets")
           self.addTab(self.tabBilan, "Bilan")
+          
           self.depenseTab()
           self.budgetsTab()
           self.bilanTab()
+          
           self.setWindowTitle("Gestionnaire de dépense")
           self.setFixedSize(QSize(1350, 750))
 
@@ -38,9 +45,12 @@ class MainUI(QTabWidget):
 
           # loading of the files countained in the repertory
           choixMois = QComboBox()
+          # chargement du fichier correspond à la valeur courant de la ComboBox
           self.data.loadFile()
+          # récupération des mois
           listMois = self.data.getMois()
 
+          # ajout des mois dans la ComboBox de choix des mois 
           for i in range(len(listMois)):
                
                choixMois.addItem(listMois[i])
@@ -56,14 +66,17 @@ class MainUI(QTabWidget):
           b.addBudget("Nourriture", 120, 0)
           b.addBudget("Déplacement", 150, 0)
 
+          # ajout des budgets dans la ComboBox relative aux budgets (colonne "catégorie" dans le tableau)
           for i in range(len(b.budgets)):
                
                elem: Budget = b.budgets[i]
                categories.append(elem.getNom())
 
+          # setup des Widgets
           layout.addWidget(choixMois)
           layout.addWidget(self.printTable())
           
+          # affichage du layout principal
           self.tabDepense.setLayout(layout)
 
 
@@ -81,11 +94,6 @@ class MainUI(QTabWidget):
           b = Budget()
           b.addBudget("Nourriture", 120, 0)
           b.addBudget("Déplacement", 150, 0)
-
-          for i in range(len(b.budgets)):
-               
-               elem: Budget = b.budgets[i]
-               categories.append(elem.getNom())
 
           
           # creation of the table
@@ -105,6 +113,7 @@ class MainUI(QTabWidget):
                entree = QTableWidgetItem(str(self.data.getEntree(i)))
                tableWidget.setItem(i, 2, entree)
                choixCat = QComboBox()
+               # ajout de comboBox à chaque ligne de la colonne "catégorie"
                for j in range(len(categories)):
                     
                     choixCat.addItem(categories[j])
@@ -124,10 +133,12 @@ class MainUI(QTabWidget):
           self.data.loadFile()
           listMois = self.data.getMois()
 
+          # ajout des mois dans une liste de mois
           for i in range(len(listMois)):
                
                choixMois.addItem(listMois[i])
 
+          # ajout des budgets principaux
           self.budgets.addBudget("Nourriture", 120, 0)
           self.budgets.addBudget("Déplacement", 150, 0)
           self.budgets.addBudget("Abonnement", 13, 0)
@@ -143,11 +154,7 @@ class MainUI(QTabWidget):
           # addition of columns
           tableWidget.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
 
-          
-
-          print(self.budgets.budgets)
-          print(self.budgets.getNomTab(0))
-
+          # rangement des valeurs dans le tableau des budgets
           for i in range(tableWidget.rowCount()):
 
                nom = QTableWidgetItem(self.budgets.getNomTab(i))
@@ -156,9 +163,11 @@ class MainUI(QTabWidget):
                situation = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
                tableWidget.setItem(i, 1, situation)
 
+          # ajout des Widget dans le layout principal
           layout.addWidget(choixMois)
           layout.addWidget(tableWidget)
 
+          # affichage de ce layout
           self.tabBudgets.setLayout(layout)
 
      
