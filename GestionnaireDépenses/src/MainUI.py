@@ -26,6 +26,12 @@ class MainUI(QTabWidget):
           self.data = Data()
           self.budgets = Budget()
           
+          self.budgets.addBudget("Nourriture", 120, 0)
+          self.budgets.addBudget("Déplacement", 150, 0)
+          self.budgets.addBudget("Divers", 150, 0)
+          self.budgets.addBudget("Soirées", 150, 0)
+          
+          
           self.addTab(self.tabDepense, "Dépenses")
           self.addTab(self.tabBudgets, "Budgets")
           self.addTab(self.tabBilan, "Bilan")
@@ -37,6 +43,8 @@ class MainUI(QTabWidget):
           self.setWindowTitle("Gestionnaire de dépense")
           self.setFixedSize(QSize(1350, 750))
 
+     
+     
      
      
      def depenseTab(self):
@@ -60,21 +68,9 @@ class MainUI(QTabWidget):
           # storing data in a list
           self.data.tidyData(path)  
 
-          # creation of a list of categories with the different budgets
-          categories = []
-          b = Budget()
-          b.addBudget("Nourriture", 120, 0)
-          b.addBudget("Déplacement", 150, 0)
-
-          # ajout des budgets dans la ComboBox relative aux budgets (colonne "catégorie" dans le tableau)
-          for i in range(len(b.budgets)):
-               
-               elem: Budget = b.budgets[i]
-               categories.append(elem.getNom())
-
           # setup des Widgets
           layout.addWidget(choixMois)
-          layout.addWidget(self.printTable())
+          layout.addWidget(self.printDepenseTab())
           
           # affichage du layout principal
           self.tabDepense.setLayout(layout)
@@ -83,18 +79,9 @@ class MainUI(QTabWidget):
      
      
      
-     """print the table in the layout
+     """print the table of depense in the layout
      """
-     def printTable(self):
-          # creation of the different layouts
-          layout = QVBoxLayout()
-
-          # creation of a list of categories with the different budgets
-          categories = []
-          b = Budget()
-          b.addBudget("Nourriture", 120, 0)
-          b.addBudget("Déplacement", 150, 0)
-
+     def printDepenseTab(self):
           
           # creation of the table
           tableWidget = QTableWidget(len(self.data.getDepenses()), 5, self)  
@@ -114,14 +101,13 @@ class MainUI(QTabWidget):
                tableWidget.setItem(i, 2, entree)
                choixCat = QComboBox()
                # ajout de comboBox à chaque ligne de la colonne "catégorie"
-               for j in range(len(categories)):
+               for j in range(len(self.budgets.budgets)):
                     
-                    choixCat.addItem(categories[j])
+                    choixCat.addItem(str(self.budgets.getNomTab(j)))
                     tableWidget.setCellWidget(i, 4, choixCat)
 
           return tableWidget
-
-     
+          
      
      
      def budgetsTab(self):
@@ -130,24 +116,47 @@ class MainUI(QTabWidget):
 
           # loading of the files countained in the repertory
           choixMois = QComboBox()
-          self.data.loadFile()
+          # récupération des mois
+          # pas d'appel à loadFile() car sinon création de doublons
           listMois = self.data.getMois()
 
-          # ajout des mois dans une liste de mois
+          # ajout des mois dans la ComboBox de choix des mois 
           for i in range(len(listMois)):
                
                choixMois.addItem(listMois[i])
 
-          # ajout des budgets principaux
-          self.budgets.addBudget("Nourriture", 120, 0)
-          self.budgets.addBudget("Déplacement", 150, 0)
-          self.budgets.addBudget("Abonnement", 13, 0)
-          self.budgets.addBudget("Gloubiboulga", 20, 0)
-          self.budgets.addBudget("Soirées", 30, 0)
-          self.budgets.addBudget("Assurance", 53, 0)
-          self.budgets.addBudget("Loyer", 325, 0)
-          self.budgets.addBudget("Charges", 25, 0)
-          self.budgets.addBudget("Divers", 70, 0)
+          # création du tableau représentant la situation des dépenses par rapport au budget
+          situationBudgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
+          # setup des colonnes 
+          situationBudgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Situation Budget'])
+          
+          # rangement des valeurs dans le tableau
+          for j in range(situationBudgetsTab.rowCount()):
+               
+               nom = QTableWidgetItem(self.budgets.getNomTab(j))
+               # rangement de la valeur à la position courante
+               situationBudgetsTab.setItem(j, 0, nom)
+               
+               # on veut savoir à combien nous sommes de la limite de budget fixée
+               situation = QTableWidgetItem(str(self.budgets.getSituationTab(j)) + "/" +
+                                            str(self.budgets.getMontantMaxTab(j))
+                                            )
+               # rangement de la valeur à la position courante
+               situationBudgetsTab.setItem(j, 1, situation)
+
+          # ajout des Widget dans le layout principal
+          layout.addWidget(choixMois)
+          layout.addWidget(self.printBudgetsTab())
+          layout.addWidget(situationBudgetsTab)
+
+          # affichage de ce layout
+          self.tabBudgets.setLayout(layout)
+
+     
+     
+     
+     
+     def printBudgetsTab(self):
           
           # creation of the table
           budgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
@@ -162,34 +171,11 @@ class MainUI(QTabWidget):
                
                montantMax = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
                budgetsTab.setItem(i, 1, montantMax)
-               
-          
-          
-          
-          # création du tableau représentant la situation des dépenses par rapport au budget
-          situationBudgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
-          # setup des colonnes 
-          situationBudgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Situation Budget'])
-          
-          # rangement des valeurs dans le tableau
-          for j in range(situationBudgetsTab.rowCount()):
-               
-               nom = QTableWidgetItem(self.budgets.getNomTab(j))
-               situationBudgetsTab.setItem(j, 0, nom)
-               
-               situation = QTableWidgetItem(str(self.budgets.getSituationTab(j)) + "/" +
-                                            str(self.budgets.getMontantMaxTab(j))
-                                            )
-               situationBudgetsTab.setItem(j, 1, situation)
 
-          # ajout des Widget dans le layout principal
-          layout.addWidget(choixMois)
-          layout.addWidget(budgetsTab)
-          layout.addWidget(situationBudgetsTab)
-
-          # affichage de ce layout
-          self.tabBudgets.setLayout(layout)
-
+          return budgetsTab
+     
+     
+     
      
      
      def bilanTab(self):
@@ -200,6 +186,13 @@ class MainUI(QTabWidget):
           layout.addWidget(QCheckBox("Maths"))
           self.setTabText(2, "Bilan")
           self.tabBilan.setLayout(layout)
+
+
+
+
+
+
+
 
 
 def main():
