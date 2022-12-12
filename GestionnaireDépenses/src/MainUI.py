@@ -26,10 +26,10 @@ class MainUI(QTabWidget):
           self.data = Data()
           self.budgets = Budget()
           
-          self.budgets.addBudget("Nourriture", 120, 0)
-          self.budgets.addBudget("Déplacement", 150, 0)
-          self.budgets.addBudget("Divers", 150, 0)
-          self.budgets.addBudget("Soirées", 150, 0)
+          self.budgets.addBudget("Nourriture", 120)
+          self.budgets.addBudget("Déplacement", 150)
+          self.budgets.addBudget("Divers", 150)
+          self.budgets.addBudget("Soirées", 150)
           
           
           self.addTab(self.tabDepense, "Dépenses")
@@ -136,23 +136,43 @@ class MainUI(QTabWidget):
                nom = QTableWidgetItem(self.budgets.getNomTab(j))
                # rangement de la valeur à la position courante
                situationBudgetsTab.setItem(j, 0, nom)
-               
                # on veut savoir à combien nous sommes de la limite de budget fixée
-               situation = QTableWidgetItem(str(self.budgets.getSituationTab(j)) + "/" +
-                                            str(self.budgets.getMontantMaxTab(j))
-                                            )
+               situation = QTableWidgetItem("0" + "/" + str(self.budgets.getMontantMaxTab(j)))
                # rangement de la valeur à la position courante
                situationBudgetsTab.setItem(j, 1, situation)
+          
+          
+          dateLabel = QLabel("Nom")
+          lineEdit1 = QLineEdit()        
+          montantLabel = QLabel("MontantMax")
+          lineEdit2 = QLineEdit()
+          
+          addButton = QPushButton("Ajouter", self)  
+          addButton.setCheckable(True)
+          
+          addButton.clicked.connect(lambda: self.majBudget(lineEdit1.text(), lineEdit2.text()))
 
           # ajout des Widget dans le layout principal
           layout.addWidget(choixMois)
           layout.addWidget(self.printBudgetsTab())
           layout.addWidget(situationBudgetsTab)
+          layout.addWidget(dateLabel)
+          layout.addWidget(lineEdit1)
+          layout.addWidget(montantLabel)
+          layout.addWidget(lineEdit2)
+          layout.addWidget(addButton)
 
           # affichage de ce layout
           self.tabBudgets.setLayout(layout)
 
      
+     
+     def majBudget(self, nomBudget: QLineEdit, montantMax: QLineEdit):
+          print("AJOUT D'UN BUDGET")
+          # ajout du budget dans la liste
+          self.budgets.addBudget(nomBudget, montantMax)
+          # mise à jour de l'affichage
+          self.printBudgetsTab()
      
      
      
@@ -162,6 +182,8 @@ class MainUI(QTabWidget):
           budgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
           # addition of columns
           budgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
+          
+          budgetsTab.clearContents()
 
           # rangement des valeurs dans le tableau des budgets
           for i in range(budgetsTab.rowCount()):

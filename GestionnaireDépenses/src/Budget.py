@@ -1,5 +1,7 @@
 class Budget():
+     
      def __init__(self) -> None:
+          
           # nom du budget
           self.nom = ''
           # montant maximum du budget
@@ -8,6 +10,11 @@ class Budget():
           self.situation = 0
           # liste de budgets
           self.budgets = []
+          
+     
+     #############################
+     # --- GETTERS & SETTERS --- #
+     #############################
 
      def getNom(self):
           return self.nom    
@@ -31,16 +38,17 @@ class Budget():
           
      """add a new budget to the list of budgets
      """
-     def addBudget(self, nom, montantMax, situation):
+     def addBudget(self, nom, montantMax):
+          
           b = Budget()
           b.nom = nom
           b.montantMax = montantMax
-          b.situation = situation
           self.budgets.append(b)
      
      """delete the budget given of list
      """
      def delBudget(self, nomBudget):
+          
           for e in range(len(self.budgets)):
                elem: Budget = self.budgets[e]
                if(elem.getNom() == nomBudget):
@@ -50,34 +58,69 @@ class Budget():
      """print the list
      """
      def printBudgets(self):
+          
           for i in range(len(self.budgets)):
                elem: Budget = self.budgets[i]
-               print(elem.getNom() + " " + str(elem.getMontantMax()) + " " + str(elem.getSituation()))
+               print(elem.getNom() + " " + str(elem.getMontantMax()))
 
      """return the list of budgets
      """
      def getBudgets(self):
+          
           return self.budgets
+     
+     
      
      # méthodes permettant de retourner l'arrtibut voulu présent à la ligne 'row' de la liste des budgets
 
      def getNomTab(self, row):
+          
           elem: Budget = self.budgets[row]
           return elem.getNom()
      
      def getSituationTab(self, row):
+          
           elem: Budget = self.budgets[row]
           return elem.getSituation()
      
      def getMontantMaxTab(self, row):
+          
           elem: Budget = self.budgets[row]
           return elem.getMontantMax()
+     
+     
+     """récupère la liste des budgets et écrit son contenu dans un fichier .txt afin de faciliter la sauvegarde
+     """
+     def completeBudgetFile(self):
+          
+          # ouverture du fichier en écriture
+          with open("Budgets.txt", "w") as budgetsFile:
+               # écriture de l'élement (nom du budget) courant dans le fichier
+               for i in range(len(self.budgets)):
+                    budgetsFile.write(f"{self.getNomTab(i)}\n{self.getMontantMaxTab(i)} \n")
+               budgetsFile.close()
+                    
+     def addBudgetFromTxt(self):
+          
+          self.completeBudgetFile()
+          with open("Budgets.txt", "r") as budgetsFile:
+               ligne = budgetsFile.readline()
+               self.budgets.append(ligne)
+               while(ligne != ''):
+                    print(ligne)
+                    ligne = budgetsFile.readline()
+                    self.budgets.append(ligne)
+               budgetsFile.close()
+                    
+               
+          
 
-
+############################
+# Test de la classe Budget #
+############################
 
 
 b = Budget()
-# b.addBudget("Nourriture", 120, 0)
-# b.addBudget("Divers", 70, 0)
-
-# print(b.getMontantMaxTab(1))
+b.addBudget("Nourriture", 120)
+b.addBudget("Divers", 70)
+b.addBudgetFromTxt()
