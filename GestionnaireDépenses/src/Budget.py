@@ -1,3 +1,5 @@
+import os
+
 class Budget():
      
      def __init__(self) -> None:
@@ -95,22 +97,48 @@ class Budget():
           
           # ouverture du fichier en écriture
           with open("Budgets.txt", "w") as budgetsFile:
-               # écriture de l'élement (nom du budget) courant dans le fichier
+               # écriture de l'élément (nom du budget) courant dans le fichier, ainsi que le montant max associé au budget
                for i in range(len(self.budgets)):
-                    budgetsFile.write(f"{self.getNomTab(i)}\n{self.getMontantMaxTab(i)} \n")
+                    budgetsFile.write(f"{self.getNomTab(i)}\n{self.getMontantMaxTab(i)}\n")
                budgetsFile.close()
                     
+     
+     
      def addBudgetFromTxt(self):
           
           self.completeBudgetFile()
           with open("Budgets.txt", "r") as budgetsFile:
                ligne = budgetsFile.readline()
-               self.budgets.append(ligne)
+               nom = ligne
                while(ligne != ''):
                     print(ligne)
                     ligne = budgetsFile.readline()
-                    self.budgets.append(ligne)
+                    montantMax = ligne
+                    self.addBudget(nom, montantMax)
                budgetsFile.close()
+     
+
+
+     def addBudgetInFile(self, nom, montantMax):
+
+          tailleFic = os.path.getsize("Budgets.txt")
+
+          # si le fichier est vide, on ajoute à la première ligne du fichier
+          if(os.path.getsize("Budgets.txt") == 0):
+               budgetsFile =  open("Budgets.txt", "w")
+               # écriture des 2 champs dans le fichier .txt, sur 2 lignes différentes
+               budgetsFile.write(f"{nom}\n" f"{montantMax}")
+               budgetsFile.close()
+               
+          # sinon, il faut d'abord faire un retour chariot et ensuite ajouter les champs
+          else:
+               budgetsFile = open("Budgets.txt", "w")
+               budgetsFile.seek(tailleFic)
+               print(budgetsFile.tell())
+               # écriture des 2 champs dans le fichier .txt, sur 2 lignes différentes
+               budgetsFile.write(f"\n{nom}" f"\n{montantMax}")
+               budgetsFile.close()
+          
                     
                
           
@@ -120,7 +148,5 @@ class Budget():
 ############################
 
 
-b = Budget()
-b.addBudget("Nourriture", 120)
-b.addBudget("Divers", 70)
-b.addBudgetFromTxt()
+# b = Budget()
+# b.printBudgets()

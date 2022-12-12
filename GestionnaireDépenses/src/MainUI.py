@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit,
                                QDateTimeEdit, QDial, QDoubleSpinBox, QFontComboBox,
@@ -25,11 +25,7 @@ class MainUI(QTabWidget):
 
           self.data = Data()
           self.budgets = Budget()
-          
-          self.budgets.addBudget("Nourriture", 120)
-          self.budgets.addBudget("Déplacement", 150)
-          self.budgets.addBudget("Divers", 150)
-          self.budgets.addBudget("Soirées", 150)
+          self.dicoBudgets = {}
           
           
           self.addTab(self.tabDepense, "Dépenses")
@@ -111,6 +107,8 @@ class MainUI(QTabWidget):
      
      
      def budgetsTab(self):
+          print("TAILLE DU FICHIER : ", os.path.getsize("Budgets.txt"))
+
           # creation of the different layouts
           layout = QVBoxLayout()
 
@@ -168,9 +166,8 @@ class MainUI(QTabWidget):
      
      
      def majBudget(self, nomBudget: QLineEdit, montantMax: QLineEdit):
-          print("AJOUT D'UN BUDGET")
-          # ajout du budget dans la liste
-          self.budgets.addBudget(nomBudget, montantMax)
+          # ajout du budget dans le fichier Budget.txt
+          self.budgets.addBudgetInFile(nomBudget, montantMax)
           # mise à jour de l'affichage
           self.printBudgetsTab()
      
@@ -185,10 +182,18 @@ class MainUI(QTabWidget):
           
           budgetsTab.clearContents()
 
+          self.remplirDico()
+          keyList = list(self.dicoBudgets.keys())
+          print(keyList)
+          valList = list(self.dicoBudgets.values())
+          print(valList)
+          #index = valList.index("120")
+          #print(keyList[index])
+
           # rangement des valeurs dans le tableau des budgets
           for i in range(budgetsTab.rowCount()):
 
-               nom = QTableWidgetItem(self.budgets.getNomTab(i))
+               nom = QTableWidgetItem(self.dicoBudgets.index)
                budgetsTab.setItem(i, 0, nom)
                
                montantMax = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
@@ -196,6 +201,29 @@ class MainUI(QTabWidget):
 
           return budgetsTab
      
+     
+     
+     
+     
+     def remplirDico(self):
+          with open("Budgets.txt", "r") as budgetsFile:
+               ligne = budgetsFile.readline()
+               nom = ligne
+               while(ligne != ''):
+                    ligne = budgetsFile.readline()
+                    #nom = ligne
+                    montantMax = ligne
+                    self.addToDico(nom, montantMax)
+          budgetsFile.close()
+          print("Dico budget : ", self.dicoBudgets)
+
+
+     
+     
+     def addToDico(self, key, value):
+          self.dicoBudgets[key] = value
+
+
      
      
      
