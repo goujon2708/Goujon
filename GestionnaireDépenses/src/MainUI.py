@@ -25,7 +25,7 @@ class MainUI(QTabWidget):
 
           self.data = Data()
           self.budgets = Budget()
-          self.dicoBudgets = {}
+          self.dicoBudgets = []
           
           
           self.addTab(self.tabDepense, "Dépenses")
@@ -107,7 +107,6 @@ class MainUI(QTabWidget):
      
      
      def budgetsTab(self):
-          print("TAILLE DU FICHIER : ", os.path.getsize("Budgets.txt"))
 
           # creation of the different layouts
           layout = QVBoxLayout()
@@ -183,12 +182,6 @@ class MainUI(QTabWidget):
           budgetsTab.clearContents()
 
           self.remplirDico()
-          keyList = list(self.dicoBudgets.keys())
-          print(keyList)
-          valList = list(self.dicoBudgets.values())
-          print(valList)
-          #index = valList.index("120")
-          #print(keyList[index])
 
           # rangement des valeurs dans le tableau des budgets
           for i in range(budgetsTab.rowCount()):
@@ -206,17 +199,21 @@ class MainUI(QTabWidget):
      
      
      def remplirDico(self):
-          with open("Budgets.txt", "r") as budgetsFile:
-               ligne = budgetsFile.readline()
-               nom = ligne
-               while(ligne != ''):
-                    ligne = budgetsFile.readline()
-                    #nom = ligne
-                    montantMax = ligne
-                    self.addToDico(nom, montantMax)
-          budgetsFile.close()
-          print("Dico budget : ", self.dicoBudgets)
-
+          f = open("Budgets.txt", "r")
+          ligne = None
+          if(os.path.getsize("Budgets.txt") != 0):
+               ligne = f.readline()
+               budgetCour = ligne.split(' ')
+               self.dicoBudgets.append(budgetCour)
+               i = 1
+          i = 0
+          while(ligne != ''):
+               ligne = f.readline()
+               budgetCour = ligne.split(' ')
+               self.dicoBudgets.append(budgetCour)
+               i = i + 1
+          f.close()
+          print(self.dicoBudgets)
 
      
      

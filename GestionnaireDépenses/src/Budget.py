@@ -121,22 +121,19 @@ class Budget():
 
      def addBudgetInFile(self, nom, montantMax):
 
-          tailleFic = os.path.getsize("Budgets.txt")
-
           # si le fichier est vide, on ajoute à la première ligne du fichier
           if(os.path.getsize("Budgets.txt") == 0):
-               budgetsFile =  open("Budgets.txt", "w")
+               budgetsFile =  open("Budgets.txt", "a")
                # écriture des 2 champs dans le fichier .txt, sur 2 lignes différentes
-               budgetsFile.write(f"{nom}\n" f"{montantMax}")
+               budgetsFile.write(f"{nom} {montantMax}")
                budgetsFile.close()
                
           # sinon, il faut d'abord faire un retour chariot et ensuite ajouter les champs
           else:
-               budgetsFile = open("Budgets.txt", "w")
-               budgetsFile.seek(tailleFic)
-               print(budgetsFile.tell())
-               # écriture des 2 champs dans le fichier .txt, sur 2 lignes différentes
-               budgetsFile.write(f"\n{nom}" f"\n{montantMax}")
+               budgetsFile = open("Budgets.txt", "a")
+               budgetsFile.seek(os.path.getsize("Budgets.txt"))
+               # écriture des 2 champs dans le fichier .txt
+               budgetsFile.write(f"\n{nom} {montantMax}")
                budgetsFile.close()
           
                     
