@@ -1,2 +1,3 @@
 Nourriture 120
-Soirées 120
+Soirees 50
+Divers 70

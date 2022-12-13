@@ -167,6 +167,7 @@ class MainUI(QTabWidget):
      def majBudget(self, nomBudget: QLineEdit, montantMax: QLineEdit):
           # ajout du budget dans le fichier Budget.txt
           self.budgets.addBudgetInFile(nomBudget, montantMax)
+          self.clearDico()
           # mise à jour de l'affichage
           self.printBudgetsTab()
      
@@ -185,11 +186,10 @@ class MainUI(QTabWidget):
 
           # rangement des valeurs dans le tableau des budgets
           for i in range(budgetsTab.rowCount()):
-
-               nom = QTableWidgetItem(self.dicoBudgets.index)
+               nom = QTableWidgetItem(self.dicoBudgets[i][0])
                budgetsTab.setItem(i, 0, nom)
                
-               montantMax = QTableWidgetItem(str(self.budgets.getMontantMaxTab(i)))
+               montantMax = QTableWidgetItem(self.dicoBudgets[i][1])
                budgetsTab.setItem(i, 1, montantMax)
 
           return budgetsTab
@@ -197,29 +197,39 @@ class MainUI(QTabWidget):
      
      
      
-     
+     """Lis les budgets présents dans le fichier et les range dans le dictionnaire
+     """
      def remplirDico(self):
+          # ouverture du budget en lecture
           f = open("Budgets.txt", "r")
           ligne = None
-          if(os.path.getsize("Budgets.txt") != 0):
-               ligne = f.readline()
-               budgetCour = ligne.split(' ')
-               self.dicoBudgets.append(budgetCour)
-               i = 1
-          i = 0
+          # nettoyage du dico pour éviter les doublons
+          self.dicoBudgets.clear()
+         
+         # parcours du fichier
           while(ligne != ''):
+               
+               # lecture de la ligne courante
                ligne = f.readline()
+               # récupération des 2 champs de la ligne courante dans une liste
                budgetCour = ligne.split(' ')
+               # ajout de cette liste dans le dico
                self.dicoBudgets.append(budgetCour)
-               i = i + 1
+               
           f.close()
-          print(self.dicoBudgets)
+          self.clearDico()
 
-     
-     
-     def addToDico(self, key, value):
-          self.dicoBudgets[key] = value
 
+     """supprime les listes vides créées par le dictionnaire
+     """
+     def clearDico(self):
+          # parcours du dictionnaire
+          for i in range(len(self.dicoBudgets)):
+               
+               # si la liste courante est vide, alors elle est supprimée du dico
+               if(self.dicoBudgets[i][0] == ''):
+                    self.dicoBudgets.pop(i)
+          
 
      
      

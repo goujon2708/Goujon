@@ -123,7 +123,7 @@ class Data():
      def loadFile(self):
           
           # récupération du nom de tous les fichiers présents dans le répertoire passé en paramètre
-          listFiles = os.listdir('C:/Users/arthu/OneDrive/Documents/GitHub/Goujon/GestionnaireDépenses/assets/files')
+          listFiles = os.listdir('/Users/poulp/Documents/GitHub/Arthur-Scherrer/GestionnaireDépenses/assets/files')
           
           # concaténation de la liste des fichiers présents dans le répertoire avec la liste des mois
           for i in range(len(listFiles)):
