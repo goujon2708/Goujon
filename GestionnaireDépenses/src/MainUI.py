@@ -26,16 +26,32 @@ class MainUI(QTabWidget):
           self.data = Data()
           self.budgets = Budget()
           self.dicoBudgets = []
+          self.budgetsTab = QTableWidget()
+          self.situationBudgetsTab = QTableWidget()
+
+          # replisssage du dico avec les valeurs présentes dans le fichier
+          self.remplirDico()
+
+          # création d'un tableau vide
+          self.budgetsTab = QTableWidget(len(self.dicoBudgets), 2, self)
+          # addition of columns
+          self.budgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
+
+          # création d'un tableau vide
+          self.situationBudgetsTab = QTableWidget(len(self.dicoBudgets), 2, self)
+          self.situationBudgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Situation Budget'])
           
           
           self.addTab(self.tabDepense, "Dépenses")
           self.addTab(self.tabBudgets, "Budgets")
           self.addTab(self.tabBilan, "Bilan")
           
-          self.depenseTab()
-          self.budgetsTab()
+          # affichage des onglets
+          self.ongletDepense()
+          self.ongletBudgets()
           self.bilanTab()
           
+          # paramètres de la fenêtre
           self.setWindowTitle("Gestionnaire de dépense")
           self.setFixedSize(QSize(1350, 750))
 
@@ -43,7 +59,7 @@ class MainUI(QTabWidget):
      
      
      
-     def depenseTab(self):
+     def ongletDepense(self):
 
           layout = QVBoxLayout()
 
@@ -106,7 +122,7 @@ class MainUI(QTabWidget):
           
      
      
-     def budgetsTab(self):
+     def ongletBudgets(self):
 
           # creation of the different layouts
           layout = QVBoxLayout()
@@ -122,23 +138,36 @@ class MainUI(QTabWidget):
                
                choixMois.addItem(listMois[i])
 
-          # création du tableau représentant la situation des dépenses par rapport au budget
-          situationBudgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
-          # setup des colonnes 
-          situationBudgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Situation Budget'])
-          
-          # rangement des valeurs dans le tableau
-          for j in range(situationBudgetsTab.rowCount()):
+          # remplissage du dictionnaire avec les valeurs présentes dans le fichier
+          self.remplirDico()
                
-               nom = QTableWidgetItem(self.budgets.getNomTab(j))
+          # rangement des valeurs dans le tableau des situations
+          for j in range(len(self.dicoBudgets)-1):
+               
+               nom = QTableWidgetItem(self.dicoBudgets[j][0])
                # rangement de la valeur à la position courante
-               situationBudgetsTab.setItem(j, 0, nom)
+               self.situationBudgetsTab.setItem(j, 0, nom)
+
+               s = str(self.dicoBudgets[j][1])
+
                # on veut savoir à combien nous sommes de la limite de budget fixée
-               situation = QTableWidgetItem("0" + "/" + str(self.budgets.getMontantMaxTab(j)))
+               situation = QTableWidgetItem("0" + "/" + s[:-1].strip())
                # rangement de la valeur à la position courante
-               situationBudgetsTab.setItem(j, 1, situation)
+               self.situationBudgetsTab.setItem(j, 1, situation)
+               
+          j = len(self.dicoBudgets)-1
+          
+          # ajout du dernier élément en dur pas de '\n' ) supprimer
+          nom = QTableWidgetItem(self.dicoBudgets[j][0])
+          self.situationBudgetsTab.setItem(j, 0, nom)
+
+          s = str(self.dicoBudgets[j][1])
+          situation = QTableWidgetItem("0" + "/" + s)
+          self.situationBudgetsTab.setItem(j, 1, situation)
+
           
           
+          # formulaire pour ajouter un budget
           dateLabel = QLabel("Nom")
           lineEdit1 = QLineEdit()        
           montantLabel = QLabel("MontantMax")
@@ -152,7 +181,7 @@ class MainUI(QTabWidget):
           # ajout des Widget dans le layout principal
           layout.addWidget(choixMois)
           layout.addWidget(self.printBudgetsTab())
-          layout.addWidget(situationBudgetsTab)
+          layout.addWidget(self.situationBudgetsTab)
           layout.addWidget(dateLabel)
           layout.addWidget(lineEdit1)
           layout.addWidget(montantLabel)
@@ -165,34 +194,68 @@ class MainUI(QTabWidget):
      
      
      def majBudget(self, nomBudget: QLineEdit, montantMax: QLineEdit):
-          # ajout du budget dans le fichier Budget.txt
+          self.budgetsTab.setRowCount(self.budgetsTab.rowCount() + 1)
+          self.situationBudgetsTab.setRowCount(self.situationBudgetsTab.rowCount() + 1)
+          
+          # # ajout du budget dans le fichier Budget.txt
           self.budgets.addBudgetInFile(nomBudget, montantMax)
+
+          # rangement des valeurs dans le tableau des situations
+          for k in range(len(self.dicoBudgets)-1):
+               
+               nom = QTableWidgetItem(self.dicoBudgets[k][0])
+               # rangement de la valeur à la position courante
+               self.situationBudgetsTab.setItem(k, 0, nom)
+
+               s = str(self.dicoBudgets[k][1])
+
+               # on veut savoir à combien nous sommes de la limite de budget fixée
+               situation = QTableWidgetItem("0" + "/" + s[:-1].strip())
+               # rangement de la valeur à la position courante
+               self.situationBudgetsTab.setItem(k, 1, situation)
+               
+          k = len(self.dicoBudgets)-1
+          
+          # ajout du dernier élément en dur pas de '\n' ) supprimer
+          nom = QTableWidgetItem(self.dicoBudgets[k][0])
+          self.situationBudgetsTab.setItem(k, 0, nom)
+
+          s = str(self.dicoBudgets[k][1])
+          situation = QTableWidgetItem("0" + "/" + s)
+          self.situationBudgetsTab.setItem(k, 1, situation)
+          
           self.clearDico()
-          # mise à jour de l'affichage
+          # # mise à jour de l'affichage
           self.printBudgetsTab()
      
      
      
      def printBudgetsTab(self):
           
-          # creation of the table
-          budgetsTab = QTableWidget(len(self.budgets.budgets), 2, self)
-          # addition of columns
-          budgetsTab.setHorizontalHeaderLabels(['Nom Budget', 'Montant Budget']) 
-          
-          budgetsTab.clearContents()
-
+          # replisssage du dico avec les valeurs présentes dans le fichier
           self.remplirDico()
 
           # rangement des valeurs dans le tableau des budgets
-          for i in range(budgetsTab.rowCount()):
+          for i in range(len(self.dicoBudgets)):
+               print(self.dicoBudgets)
                nom = QTableWidgetItem(self.dicoBudgets[i][0])
-               budgetsTab.setItem(i, 0, nom)
-               
-               montantMax = QTableWidgetItem(self.dicoBudgets[i][1])
-               budgetsTab.setItem(i, 1, montantMax)
+               self.budgetsTab.setItem(i, 0, nom)
 
-          return budgetsTab
+               s = str(self.dicoBudgets[i][1])
+               
+               montantMax = QTableWidgetItem(s[:-1])
+               self.budgetsTab.setItem(i, 1, montantMax)
+
+          i = self.budgetsTab.rowCount()-1
+               
+          # ajout du dernier élément en dur pas de '\n' ) supprimer
+          nom = QTableWidgetItem(self.dicoBudgets[i][0])
+          self.budgetsTab.setItem(i, 0, nom)
+          
+          montantMax = QTableWidgetItem(str(self.dicoBudgets[i][1]))
+          self.budgetsTab.setItem(i, 1, montantMax)
+
+          return self.budgetsTab
      
      
      
@@ -200,24 +263,25 @@ class MainUI(QTabWidget):
      """Lis les budgets présents dans le fichier et les range dans le dictionnaire
      """
      def remplirDico(self):
-          # ouverture du budget en lecture
-          f = open("Budgets.txt", "r")
-          ligne = None
-          # nettoyage du dico pour éviter les doublons
-          self.dicoBudgets.clear()
-         
-         # parcours du fichier
-          while(ligne != ''):
-               
-               # lecture de la ligne courante
-               ligne = f.readline()
-               # récupération des 2 champs de la ligne courante dans une liste
-               budgetCour = ligne.split(' ')
-               # ajout de cette liste dans le dico
-               self.dicoBudgets.append(budgetCour)
-               
-          f.close()
-          self.clearDico()
+
+               # ouverture du budget en lecture
+               f = open("Budgets.txt", "r")
+               ligne = None
+               # nettoyage du dico pour éviter les doublons
+               self.dicoBudgets.clear()
+          
+               # parcours du fichier
+               while(ligne != ''):
+                    
+                    # lecture de la ligne courante
+                    ligne = f.readline()
+                    # récupération des 2 champs de la ligne courante dans une liste
+                    budgetCour = ligne.split(' ')
+                    # ajout de cette liste dans le dico
+                    self.dicoBudgets.append(budgetCour)
+                    
+               f.close()
+               self.clearDico()
 
 
      """supprime les listes vides créées par le dictionnaire

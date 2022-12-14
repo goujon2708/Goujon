@@ -1,3 +1,2 @@
-Nourriture 120
-Soirees 50
-Divers 70
+Assurance 50
+Soirees 39
